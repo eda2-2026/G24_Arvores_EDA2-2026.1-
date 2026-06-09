@@ -1,108 +1,152 @@
-# Controle de Estoque (Vestuário) - Algoritmos de Ordenação
+´`# 🗡️ Caçador de Relíquias — Árvore Rubro-Negra
 
-Sistema prático de gerenciamento e controle de estoque para uma loja de roupas, desenvolvido para demonstrar e comparar a eficiência de diferentes algoritmos de ordenação na disciplina de **Estruturas de Dados e Algoritmos 2 (EDA2)**.
+RPG de terminal interativo desenvolvido para demonstrar a **Árvore Rubro-Negra (Red-Black Tree)** na disciplina de **Estruturas de Dados e Algoritmos 2 (EDA2) – 2026.1**.
+
+---
 
 ## Alunos
 
-<div align = "center">
+<div align="center">
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/alvesingrid"><img style="border-radius: 50%;" src="https://github.com/alvesingrid.png" width="190;" alt=""/><br /><sub><b>Ingrid Alves</b></sub></a><br /><a href="Link git" title="Rocketseat"></a></td>
-    <td align="center"><a href="https://github.com/Ericcs10"><img style="border-radius: 50%;" src="https://github.com/Ericcs10.png" width="190px;" alt=""/><br /><sub><b>Eric Camargo </b></sub></a><br />
+    <td align="center"><a href="https://github.com/alvesingrid"><img style="border-radius: 50%;" src="https://github.com/alvesingrid.png" width="120" alt=""/><br/><sub><b>Ingrid Alves</b></sub></a></td>
+    <td align="center"><a href="https://github.com/Ericcs10"><img style="border-radius: 50%;" src="https://github.com/Ericcs10.png" width="120" alt=""/><br/><sub><b>Eric Camargo</b></sub></a></td>
   </tr>
 </table>
 </div>
 
-## Autores
-
-| Matrícula | Nome |
-| :--- | :--- |
-| 202045348 | **Ingrid Alves Rocha** |
-| 202016168 | **Eric Camargo da Silva** |
-
-## Sobre a Modelagem
-
-O acervo gerencia itens modelados com identificadores voltados para filtragens do dia a dia de um e-commerce ou estoque físico:
-* `código` (inteiro único)
-* `descrição` e `tamanho` (strings)
-* `preço` (float)
-* `quantidade` (inteiro)
+| Matrícula  | Nome                     |
+|:-----------|:-------------------------|
+| 202045348  | **Ingrid Alves Rocha**   |
+| 202016168  | **Eric Camargo da Silva**|
 
 ---
 
-## Conexão Teórico-Prática dos Algoritmos
+## 🎮 Sobre o Projeto
 
-Cada método foi implementado visando resolver um problema específico de organização de listagem:
+**Caçador de Relíquias** é um RPG de dungeon em modo texto onde o jogador explora 5 salas, derrota inimigos e coleta itens para recuperar uma relíquia lendária roubada por um dragão.
 
-### 1. Insertion Sort (Filtro por Preço)
-* **Aplicação Prática**: Ideal para ordenar subconjuntos ou organizar itens de um carrinho do menor para o maior preço.
-* **Teoria**: Algoritmo simples, natural e **estável**. Muito utilizado no cotidiano (como na organização de cartas de baralho). Possui complexidade $O(n^2)$, apresentando o menor número de trocas e comparações quando o vetor já se encontra parcial ou totalmente ordenado.
+O diferencial acadêmico: **o inventário do jogador é uma Árvore Rubro-Negra**. Cada ação do jogo demonstra visualmente uma operação real na estrutura:
 
-### 2. Bubble Sort (Auditoria de Disponibilidade)
-* **Aplicação Prática**: Empregado para ordenar o estoque com base na quantidade disponível, permitindo ao gestor identificar rapidamente produtos esgotados ou com baixo volume.
-* **Teoria**: Realiza ordenações através de sucessivas comparações e trocas entre elementos adjacentes. O maior elemento vai "borbulhando" até alcançar sua posição final no vetor.
-
-### 3. Shell Sort (Catálogo Geral por Código)
-* **Aplicação Prática**: Utilizado para a ordenação veloz de todo o catálogo através dos códigos numéricos de identificação das peças.
-* **Teoria**: Criado por Donald Shell em 1959, é o algoritmo de ordenação mais eficiente dentre os que possuem complexidade quadrática. Consiste em um refinamento direto do Insertion Sort, atuando sobre múltiplos segmentos do vetor simultaneamente.
+| Ação no Jogo         | Operação na Árvore RB |
+|----------------------|-----------------------|
+| Coletar item         | **INSERT** + fixup    |
+| Usar poção           | **SEARCH** → **DELETE** + fixup |
+| Listar inventário    | **IN-ORDER** traversal |
+| Visualizar árvore    | **printTree** com cores |
 
 ---
 
-## Benchmark de Desempenho
+## 🌲 A Árvore Rubro-Negra
 
-O sistema conta com um modo de **benchmark** (opção 5 do menu) que executa os três algoritmos sobre o estado atual do estoque e exibe, lado a lado, o número de **comparações** e **trocas** realizadas por cada um — sem alterar os dados exibidos.
+Uma **BST auto-balanceada** que garante altura máxima $2\log_2(n+1)$.
 
-Esse recurso permite observar na prática o que a teoria prevê sobre complexidade de algoritmos. Exemplo de saída com o estoque inicial (6 itens em ordem aleatória):
+### Propriedades mantidas
 
-| Algoritmo      | Comparações | Trocas |
-|----------------|-------------|--------|
-| Insertion Sort | 9           | 5      |
-| Bubble Sort    | 15          | 5      |
-| Shell Sort     | 8           | 3      |
+1. Todo nó é **VERMELHO** ou **PRETO**
+2. A **raiz** é sempre **PRETA**
+3. Toda **folha** (nó sentinela `nil`) é **PRETA**
+4. Filho de nó **VERMELHO** é obrigatoriamente **PRETO**
+5. Todo caminho raiz → folha contém o mesmo número de nós **PRETOS** (black-height)
 
-> O Shell Sort tende a realizar menos operações por trabalhar com intervalos (*gaps*) decrescentes, aproximando-se de $O(n \log n)$ na prática, enquanto Bubble Sort sempre percorre todas as comparações possíveis.
+### Complexidade
+
+| Operação | Pior caso |
+|----------|-----------|
+| Busca    | $O(\log n)$ |
+| Inserção | $O(\log n)$ |
+| Remoção  | $O(\log n)$ |
+
+### Por que RB Tree no jogo?
+
+O inventário cresce e diminui dinamicamente (coleta e uso de itens). Uma BST comum degradaria para $O(n)$; a Rubro-Negra garante eficiência mesmo no pior caso, graças às **rotações** e **recoloração** no `insertFixup` e `deleteFixup`.
 
 ---
 
-## Como Executar
+## 📁 Estrutura do Projeto
 
-1. Clone o repositório para a sua máquina:
-```bash
-   git clone https://github.com/indalvess/eda2-estoque-ordenacao.git
+```
+G24_Arvores_EDA2-2026.1-/
+├── src/
+│   ├── rbtree.h    # Tipos e declarações da RB Tree
+│   ├── rbtree.c    # Implementação completa (rotações, fixups)
+│   └── main.c      # Jogo RPG + integração com a árvore
+├── docs/
+│   └── screenshots/
+├── Makefile
+└── README.md
 ```
 
-2. Acesse o diretório raiz do projeto:
+---
+
+## ▶️ Como Executar
+
+### Pré-requisitos
+- GCC instalado (`gcc --version`)
+- Terminal com suporte a cores ANSI (Linux/macOS/WSL)
+
+### Compilar e executar
+
 ```bash
-   cd eda2-estoque-ordenacao
+# Clonar o repositório
+git clone https://github.com/SEU_USUARIO/G24_Arvores_EDA2-2026.1-.git
+cd G24_Arvores_EDA2-2026.1-
+
+# Compilar
+make
+
+# Executar
+./cacador
+
+# Ou tudo de uma vez
+make run
 ```
 
-3. Compile os arquivos de código-fonte usando o `gcc`:
-```bash
-   gcc -o estoque src/ordenacao.c src/main.c
+### Comandos do jogo
+
+| Tecla | Ação |
+|-------|------|
+| Número | Escolher opção do menu |
+| `s/n`  | Confirmar/cancelar ação |
+| `P`    | Usar poção durante batalha |
+| ENTER  | Continuar |
+
+---
+
+## 🏗️ Implementação Técnica
+
+### Nó sentinela (`nil`)
+Usamos um único nó `nil` preto como folha universal, eliminando verificações de `NULL` e simplificando as rotações.
+
+### Rotações
+- `leftRotate(t, x)` — pivô à esquerda
+- `rightRotate(t, y)` — pivô à direita
+
+### `insertFixup`
+Corrige 3 casos após inserção de nó VERMELHO:
+- **Caso 1**: Tio vermelho → recolorir, subir
+- **Caso 2**: Tio preto, z é filho direito → rotação à esquerda
+- **Caso 3**: Tio preto, z é filho esquerdo → rotação à direita + recolorir
+
+### `deleteFixup`
+Corrige 4 casos de "nó duplamente preto" após remoção, aplicando rotações e recoloração simétricas.
+
+---
+
+## 📊 Visualização da Árvore
+
+O jogo exibe a árvore no terminal após cada operação:
+
 ```
-
-4. Execute a aplicação:
-```bash
-   ./estoque
+/── [P] ID:9  Armadura de Couro   (val:9)
+    /── [V] ID:7  Adaga Afiliada      (val:12)
+        /── [P] ID:5  Pocao de Cura P     (val:25)
+\── [P] ID:13 Lança de Ferro       (val:18)
+    \── [V] ID:15 Elmo de Bronze       (val:12)
 ```
+`[V]` = Nó Vermelho | `[P]` = Nó Preto
 
-## Screenshots
-<p align="center">
-  <img src="Documentos/screenshots/Print%201.png" alt="Print 1 do projeto" width="600"/>
-</p>
+---
 
-<p align="center">
-  <img src="Documentos/screenshots/Print%202.png" alt="Print 2 do projeto" width="600"/>
-</p>
-
-<p align="center">
-  <img src="Documentos/screenshots/Print%203.png" alt="Print 3 do projeto" width="600"/>
-</p>
-
-## Apresentação 
-
-<div align="center">
-<a href="https://youtu.be/PoJ3FK-J3wM?si=VLjQ5nK-w6U8Dh7-"><img src="https://i.imgur.com/nNBEJk2.png" width="50%"></a>
-</div>
-
-<font size="3"><p style="text-align: center">Autor: <a href="https://github.com/alvesingrid">Ingrid Alves</a> e <a href="https://github.com/Ericcs10">Eric Camargo</a>.</p></font>
+<font size="3"><p align="center">Projeto EDA2 — 2026.1 | Grupo 24<br/>
+<a href="https://github.com/alvesingrid">Ingrid Alves</a> e <a href="https://github.com/Ericcs10">Eric Camargo</a></p></font>
