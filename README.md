@@ -192,9 +192,9 @@ G24_Arvores_EDA2-2026.1-/
 ### 🖥️ Versão Terminal
 
 <p align="center">
-  <img src="docs/screenshots/terminal_titulo.png" alt="Tela de título e primeiro INSERT na Árvore RB" width="48%"/>
+  <img src="docs/screenshots/cap_inicio_terminal.png" alt="Tela de título e primeiro INSERT na Árvore RB" width="48%"/>
   &nbsp;
-  <img src="docs/screenshots/terminal_jogo.png" alt="Menu de ações durante o jogo" width="48%"/>
+  <img src="docs/screenshots/cap_inserção_terminal.png" alt="Menu de ações durante o jogo" width="48%"/>
 </p>
 <p align="center"><em>Esquerda: tela de título + INSERT na árvore | Direita: menu de ações da sala</em></p>
 
