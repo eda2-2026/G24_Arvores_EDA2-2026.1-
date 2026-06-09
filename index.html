@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Caçador de Relíquias — RB Tree | EDA2 G24</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080810;--panel:#11111c;--card:#18182a;--brd:#252535;--gold:#d4a853;--red:#e05555;--grn:#4caf7a;--blu:#5588dd;--pur:#9970e0;--txt:#e0d8f0;--dim:#666}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+header{background:linear-gradient(135deg,#1a0a2e,#0d1a3a);border-bottom:2px solid var(--gold);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+header h1{font-family:'Cinzel',serif;color:var(--gold);font-size:1.1rem;text-shadow:0 0 20px rgba(212,168,83,.5)}
+main{display:grid;grid-template-columns:230px 1fr 310px;flex:1;overflow:hidden}
+.col{background:var(--panel);border-right:1px solid var(--brd);display:flex;flex-direction:column;overflow:hidden}
+.col:last-child{border-right:none;border-left:1px solid var(--brd)}
+.ptitle{font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--brd);flex-shrink:0}
+.pbody{padding:10px 12px;overflow-y:auto;flex:1}
+.bar-w{background:#111;border-radius:3px;height:8px;margin:3px 0 8px;overflow:hidden}
+.bar{height:100%;border-radius:3px;transition:width .4s}
+.hp-b{background:linear-gradient(90deg,#a03030,var(--red))}.exp-b{background:linear-gradient(90deg,#223,var(--blu))}
+.stat{display:flex;justify-content:space-between;font-size:.73rem;margin-bottom:3px}
+.sl{color:var(--dim)}.sv{color:var(--txt);font-weight:600}
+.inv-it{font-size:.72rem;padding:3px 7px;border-radius:3px;margin-bottom:2px;border-left:3px solid transparent;cursor:pointer;transition:background .15s}
+.inv-it:hover{background:var(--card)}
+.inv-it.Arma{border-color:var(--red)}.inv-it.Pocao{border-color:var(--grn)}.inv-it.Armadura{border-color:var(--blu)}.inv-it.Especial{border-color:var(--gold)}
+.gcol{background:#0c0c18;border-right:1px solid var(--brd);display:flex;flex-direction:column;overflow:hidden}
+.rhdr{background:linear-gradient(135deg,#15092888,#0a122888);border-bottom:1px solid var(--brd);padding:10px 16px;flex-shrink:0}
+.rnm{font-family:'Cinzel',serif;color:var(--gold);font-size:1rem}.rds{font-size:.73rem;color:var(--dim);margin-top:3px}
+.log{flex:1;overflow-y:auto;padding:10px 16px;display:flex;flex-direction:column;gap:4px}
+.msg{font-size:.78rem;line-height:1.5;padding:4px 8px;border-radius:4px;animation:fi .25s}
+@keyframes fi{from{opacity:0;transform:translateY(3px)}}
+.info{color:var(--txt)}.combat{color:var(--red);background:#15040488}.ok{color:var(--grn);background:#04130888}
+.rbt{color:#bb99ff;background:#0d0a1e88;border-left:3px solid var(--pur);font-family:monospace;font-size:.72rem}
+.gold{color:var(--gold)}.sys{color:var(--dim);font-style:italic}
+.abar{border-top:1px solid var(--brd);padding:10px 16px;background:var(--panel);flex-shrink:0;display:flex;gap:5px;flex-wrap:wrap}
+.btn{font-size:.73rem;padding:5px 10px;border-radius:5px;border:1px solid var(--brd);background:var(--card);color:var(--txt);cursor:pointer;transition:all .2s}
+.btn:hover:not(:disabled){border-color:var(--gold);color:var(--gold);transform:translateY(-1px)}
+.btn:disabled{opacity:.3;cursor:default}
+.btn.r{border-color:#5a1515;color:var(--red)}.btn.r:hover:not(:disabled){background:#1a0505;border-color:var(--red)}
+.btn.g{border-color:#1a5a30;color:var(--grn)}.btn.g:hover:not(:disabled){background:#051510;border-color:var(--grn)}
+.btn.gold{border-color:var(--gold);color:var(--gold)}
+.ebox{background:linear-gradient(180deg,#0a0515,#100508);border:1px solid #3a1020;border-radius:6px;padding:10px 14px;margin:0 16px 6px;flex-shrink:0}
+.enm{font-family:'Cinzel',serif;color:var(--red);font-size:.9rem;margin-bottom:5px}
+.ehw{background:#1a0505;border-radius:3px;height:10px;border:1px solid #660000;overflow:hidden;margin-bottom:4px}
+.ehb{background:linear-gradient(90deg,#660000,var(--red));height:100%;transition:width .4s}
+.est{font-size:.7rem;color:var(--dim)}
+.intro{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:14px;padding:30px;text-align:center}
+.ititle{font-family:'Cinzel',serif;font-size:1.8rem;color:var(--gold);text-shadow:0 0 30px rgba(212,168,83,.6)}
+.isub{font-size:.8rem;color:var(--dim);max-width:340px;line-height:1.6}
+input{background:var(--card);border:1px solid var(--brd);border-radius:5px;color:var(--txt);padding:9px 14px;font-size:.9rem;font-family:'Inter',sans-serif;width:220px;text-align:center}
+input:focus{outline:none;border-color:var(--gold)}
+#tsvg{width:100%;flex:1;min-height:0;overflow:visible}
+.oplog{border-top:1px solid var(--brd);padding:8px 12px;height:120px;overflow-y:auto;font-size:.69rem;font-family:monospace;color:#9977dd;line-height:1.6;flex-shrink:0}
+.floors{display:flex;gap:5px;padding:0 16px 6px;flex-shrink:0}
+.fd{width:9px;height:9px;border-radius:50%;background:var(--brd);border:1px solid #444;transition:background .3s}
+.fd.done{background:var(--grn)}.fd.cur{background:var(--gold);box-shadow:0 0 6px var(--gold)}
+</style>
+</head>
+<body>
+<header>
+  <h1>⚔ Caçador de Relíquias — Árvore Rubro-Negra</h1>
+  <span style="font-size:.7rem;color:var(--dim)">EDA2 2026.1 | G24 | Ingrid Alves &amp; Eric Camargo</span>
+</header>
+<main>
+  <div class="col" id="lcol">
+    <div class="ptitle">Herói &amp; Inventário</div>
+    <div class="pbody" id="sbody"><div class="sys" style="padding:10px;font-size:.75rem">Inicie o jogo →</div></div>
+  </div>
+  <div class="gcol" id="gcol">
+    <div id="gc" style="display:flex;flex-direction:column;height:100%;overflow:hidden">
+      <div class="intro" id="isc">
+        <div class="ititle">🗡 Caçador de Relíquias</div>
+        <div class="isub">Um RPG de dungeon onde seu inventário é gerenciado por uma <strong style="color:var(--pur)">Árvore Rubro-Negra</strong>.<br><br>Coletou item = <b>INSERT</b> | Usou poção = <b>DELETE</b> | Listou = <b>IN-ORDER</b></div>
+        <input id="pnm" placeholder="Seu nome de herói" maxlength="20">
+        <button class="btn gold" onclick="startGame()">⚔ Começar Aventura</button>
+        <div style="font-size:.68rem;color:var(--dim)">EDA2 2026.1 | Grupo 24</div>
+      </div>
+    </div>
+  </div>
+  <div class="col" style="border-right:none;border-left:1px solid var(--brd)">
+    <div class="ptitle">🌲 Árvore Rubro-Negra ao Vivo</div>
+    <svg id="tsvg"></svg>
+    <div class="oplog" id="oplog"><span style="color:var(--dim)">Operações aparecerão aqui...</span></div>
+  </div>
+</main>
+<script src="game.js"></script>
+</body>
+</html>
