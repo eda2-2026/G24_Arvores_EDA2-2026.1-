@@ -1,99 +1,108 @@
-# Estrutura de Dados 2 - algoritmos de busca
+# Controle de Estoque (Vestuário) - Algoritmos de Ordenação
 
-Repositório destinado ao trabalho de algoritmos de busca da disciplina de estrutura de dados 2
+Sistema prático de gerenciamento e controle de estoque para uma loja de roupas, desenvolvido para demonstrar e comparar a eficiência de diferentes algoritmos de ordenação na disciplina de **Estruturas de Dados e Algoritmos 2 (EDA2)**.
 
 ## Alunos
-| Matrícula   | Aluno                              |
-|-------------|------------------------------------|
-|  202045348  | Ingrid Alves Rocha   |
-| 202016168   | Eric Camargo da Silva              |
 
-## Sobre 
+<div align = "center">
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/alvesingrid"><img style="border-radius: 50%;" src="https://github.com/alvesingrid.png" width="190;" alt=""/><br /><sub><b>Ingrid Alves</b></sub></a><br /><a href="Link git" title="Rocketseat"></a></td>
+    <td align="center"><a href="https://github.com/Ericcs10"><img style="border-radius: 50%;" src="https://github.com/Ericcs10.png" width="190px;" alt=""/><br /><sub><b>Eric Camargo </b></sub></a><br />
+  </tr>
+</table>
+</div>
 
-Este projeto demonstra a aplicação prática do **Algoritmo Greedy (Guloso)** para resolver o problema clássico do troco, utilizando como base o sistema monetário brasileiro. O objetivo é calcular a menor quantidade possível de cédulas para um determinado valor em reais.
+## Autores
 
-O algoritmo funciona tomando a melhor decisão local a cada passo: ele sempre seleciona a maior cédula disponível que seja menor ou igual ao valor restante, repetindo o processo até que o valor seja zerado.
+| Matrícula | Nome |
+| :--- | :--- |
+| 202045348 | **Ingrid Alves Rocha** |
+| 202016168 | **Eric Camargo da Silva** |
 
-### Principais Características:
-* **Eficiência:** Execução otimizada com complexidade de tempo $O(n)$, onde $n$ é o número de tipos de cédulas.
-* **Confiabilidade:** Uso de representação em centavos (inteiros) para evitar erros de precisão de ponto flutuante comuns em Python.
-* **Interface Gráfica:** Implementação amigável utilizando a biblioteca `Tkinter`.
-* **Testes Unitários:** Validação de casos extremos e prova de otimalidade com `pytest`.
+## Sobre a Modelagem
 
+O acervo gerencia itens modelados com identificadores voltados para filtragens do dia a dia de um e-commerce ou estoque físico:
+* `código` (inteiro único)
+* `descrição` e `tamanho` (strings)
+* `preço` (float)
+* `quantidade` (inteiro)
 
 ---
 
-## Screenshots
+## Conexão Teórico-Prática dos Algoritmos
 
-## Instalação
-### Pré-requisitos
-- Python 3.10 ou superior
-- `tkinter` (já incluso no Python padrão)
-- `pytest` (apenas para rodar os testes)
+Cada método foi implementado visando resolver um problema específico de organização de listagem:
 
-### Passo a passo
+### 1. Insertion Sort (Filtro por Preço)
+* **Aplicação Prática**: Ideal para ordenar subconjuntos ou organizar itens de um carrinho do menor para o maior preço.
+* **Teoria**: Algoritmo simples, natural e **estável**. Muito utilizado no cotidiano (como na organização de cartas de baralho). Possui complexidade $O(n^2)$, apresentando o menor número de trocas e comparações quando o vetor já se encontra parcial ou totalmente ordenado.
 
+### 2. Bubble Sort (Auditoria de Disponibilidade)
+* **Aplicação Prática**: Empregado para ordenar o estoque com base na quantidade disponível, permitindo ao gestor identificar rapidamente produtos esgotados ou com baixo volume.
+* **Teoria**: Realiza ordenações através de sucessivas comparações e trocas entre elementos adjacentes. O maior elemento vai "borbulhando" até alcançar sua posição final no vetor.
+
+### 3. Shell Sort (Catálogo Geral por Código)
+* **Aplicação Prática**: Utilizado para a ordenação veloz de todo o catálogo através dos códigos numéricos de identificação das peças.
+* **Teoria**: Criado por Donald Shell em 1959, é o algoritmo de ordenação mais eficiente dentre os que possuem complexidade quadrática. Consiste em um refinamento direto do Insertion Sort, atuando sobre múltiplos segmentos do vetor simultaneamente.
+
+---
+
+## Benchmark de Desempenho
+
+O sistema conta com um modo de **benchmark** (opção 5 do menu) que executa os três algoritmos sobre o estado atual do estoque e exibe, lado a lado, o número de **comparações** e **trocas** realizadas por cada um — sem alterar os dados exibidos.
+
+Esse recurso permite observar na prática o que a teoria prevê sobre complexidade de algoritmos. Exemplo de saída com o estoque inicial (6 itens em ordem aleatória):
+
+| Algoritmo      | Comparações | Trocas |
+|----------------|-------------|--------|
+| Insertion Sort | 9           | 5      |
+| Bubble Sort    | 15          | 5      |
+| Shell Sort     | 8           | 3      |
+
+> O Shell Sort tende a realizar menos operações por trabalhar com intervalos (*gaps*) decrescentes, aproximando-se de $O(n \log n)$ na prática, enquanto Bubble Sort sempre percorre todas as comparações possíveis.
+
+---
+
+## Como Executar
+
+1. Clone o repositório para a sua máquina:
 ```bash
-# 1. Clone o repositório
-git clone https://github.com/SEU_USUARIO/caixa-eletronico-greedy.git
-cd caixa-eletronico-greedy
-
-# 2. (Opcional) Crie um ambiente virtual
-python -m venv venv
-source venv/bin/activate      # Linux/macOS
-venv\Scripts\activate         # Windows
-
-# 3. Instale dependências
-pip install -r requirements.txt
-
-# 4. Execute a interface gráfica
-python interface.py
-
-# 5. Execute os testes
-python -m pytest test_greedy.py -v
+   git clone https://github.com/indalvess/eda2-estoque-ordenacao.git
 ```
 
----
+2. Acesse o diretório raiz do projeto:
+```bash
+   cd eda2-estoque-ordenacao
+```
 
-## Uso
+3. Compile os arquivos de código-fonte usando o `gcc`:
+```bash
+   gcc -o estoque src/ordenacao.c src/main.c
+```
 
-Após realizar a instalação conforme o passo a passo anterior, siga as instruções abaixo para utilizar o simulador de Caixa Eletrônico:
+4. Execute a aplicação:
+```bash
+   ./estoque
+```
 
-1.  **Inicie a aplicação:**
-    ```bash
-    python interface.py
-    ```
-2.  **Interação com a Interface:**
-    * No campo de entrada, digite o **valor desejado** (ex: `388`).
-    * Clique no botão **Calcular** (ou pressione Enter).
-3.  **Resultado:**
-    * O sistema exibirá a listagem detalhada de quantas notas de cada valor serão necessárias.
-    * Exemplo para R$ 388: 1 de R$200, 1 de R$100, 1 de R$50, 1 de R$20, 1 de R$10, 1 de R$5, 1 de R$2 e 1 de R$1.
-4.  **Execução de Testes:**
-    Para verificar a integridade do algoritmo de busca por troco, execute:
-    ```bash
-    python -m pytest test_greedy.py -v
-    ```
+## Screenshots
+<p align="center">
+  <img src="Documentos/screenshots/Print%201.png" alt="Print 1 do projeto" width="600"/>
+</p>
 
----
+<p align="center">
+  <img src="Documentos/screenshots/Print%202.png" alt="Print 2 do projeto" width="600"/>
+</p>
 
-## Videos de Apresentação
+<p align="center">
+  <img src="Documentos/screenshots/Print%203.png" alt="Print 3 do projeto" width="600"/>
+</p>
 
-<table border="1" style="width: 100%; text-align: center;">
-    <thead>
-        <tr>
-            <th>Descrição</th>
-            <th>Link</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td></td>
-            <td><a href="">Assistir no YouTube</a></td>
-        </tr>
-        <tr>
-            <td> </td>
-            <td><a href="">Assistir no YouTube</a></td>
-        </tr>
-    </tbody>
-</table>
+## Apresentação 
+
+<div align="center">
+<a href="https://youtu.be/PoJ3FK-J3wM?si=VLjQ5nK-w6U8Dh7-"><img src="https://i.imgur.com/nNBEJk2.png" width="50%"></a>
+</div>
+
+<font size="3"><p style="text-align: center">Autor: <a href="https://github.com/alvesingrid">Ingrid Alves</a> e <a href="https://github.com/Ericcs10">Eric Camargo</a>.</p></font>
